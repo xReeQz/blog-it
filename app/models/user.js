@@ -1,62 +1,78 @@
-﻿var Promise = require('bluebird');
-var crypto = require('crypto');
+﻿var crypto = require('crypto');
 var util = require('util');
-
-var mongoose = require('../lib/mongoose');
-Promise.promisifyAll(mongoose);
-
+var mongoose = require('../../modules/mongoose');
 var Schema = mongoose.Schema;
 
 var schema = new Schema({
-    username: { type: String, unique: true, required: true },
-    hashedPassword: { type: String, required: true },
-    salt: { type: String, required: true },
-    created: { type: Date, default: Date.now }
+	firstName: {
+		type: String,
+		trim: true,
+		maxLength: 50
+	},
+	lastName: {
+		type: String,
+		trim: true,
+		maxLength: 50
+	},
+	email: {
+		type: String,
+		trim: true,
+		unique: true,
+		required: true,
+		maxLength: 100,
+		validate: [validateEmail, 'Email is invalid.']
+	},
+	hashedPassword: {
+		type: String,
+		required: true
+	},
+	salt: {
+		type: String,
+		required: true
+	},
+	createdDate: {
+		type: Date,
+		default: Date.now
+	}
 });
 
-schema.method('encryptPassword', function (password) {
-    return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
+schema.method.checkPassword = (password) => {
+	return encryptPassword(password, this.salt) === this.hashedPassword;
+};
+
+schema.virtual('password').set((password) => {
+	this.salt = Math.random() + '';
+	this.hashedPassword = encryptPassword(password, this.salt);
 });
 
-schema.method('checkPassword', function (password) {
-    return this.encryptPassword(password) === this.hashedPassword;
-});
+schema.static.authorize = (email, password) => {
+	var User = this;
 
-schema.virtual('password')
-    .set(function (password) {
-        this._plainPassword = password;
-        this.salt = Math.random() + '';
-        this.hashedPassword = this.encryptPassword(password);
-    }).get(function () {
-        return this._plainPassword;
-    });
+	return User.findOneAsync({ email: email })
+		.then(user => {
+			if (user) {
+				if (user.checkPassword(password)) {
+					return user;
+				} else {
+					var err = new Error('Password is wrong.');
+					err.name = 'AuthError';
+					throw err;
+				}
+			}
 
-schema.static('authorize', function(username, password) {
-    var User = this;
+			return null;
+		})
+};
 
-    return User.findOneAsync({ username: username })
-        .then(user => {
-            if (user) {
-                if (user.checkPassword(password)) {
-                    return user;
-                } else {
-                    throw new AuthError("Password is wrong");
-                }
-            } else {
-                var newUser = new User({ username: username, password: password });
-                return newUser.saveAsync().then(user => user);
-            }
-        })
-});
 
 module.exports = mongoose.model('User', schema);
 
-function AuthError(message) {
-    Error.apply(this, arguments);
-    Error.captureStackTrace(this, AuthError);
 
-    this.message
+function encryptPassword(password, salt) {
+	return crypto.createHmac('sha1', salt).update(password).digest('hex');
 }
 
-util.inherits(AuthError, Error);
-AuthError.prototype.name = 'AuthError';
+function validateEmail(email) {
+	var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	return re.test(email)
+}
