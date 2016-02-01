@@ -38,8 +38,8 @@ module.exports = {
 				loader: ExtractTextPlugin.extract('style', 'css!resolve-url')
 			},
 			{
-				test: /\.scss$/,
-				loader: ExtractTextPlugin.extract('style', 'css!resolve-url!sass?sourceMap')
+				test: /\.less$/,
+				loader: ExtractTextPlugin.extract('style', 'css!resolve-url!less')
 			}
 		]
 	},
