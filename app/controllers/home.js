@@ -6,7 +6,7 @@ module.exports = addRouter;
 
 
 router.get('/', (req, res, next) => {
-	res.render('index', { title: 'Generator-Express MVC' });
+	res.render('index', { title: 'Welcome to Blog-IT' });
 });
 
 function addRouter(app) {

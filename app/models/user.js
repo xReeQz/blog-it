@@ -1,4 +1,5 @@
 ﻿var crypto = require('crypto');
+var validator = require('validator');
 var util = require('util');
 var mongoose = require('../../modules/mongoose');
 var Schema = mongoose.Schema;
@@ -6,11 +7,13 @@ var Schema = mongoose.Schema;
 var schema = new Schema({
 	firstName: {
 		type: String,
+		required: true,
 		trim: true,
 		maxLength: 50
 	},
 	lastName: {
 		type: String,
+		required: true,
 		trim: true,
 		maxLength: 50
 	},
@@ -20,7 +23,7 @@ var schema = new Schema({
 		unique: true,
 		required: true,
 		maxLength: 100,
-		validate: [validateEmail, 'Email is invalid.']
+		validate: [validator.isEmail, 'Email is invalid.']
 	},
 	hashedPassword: {
 		type: String,
@@ -40,7 +43,7 @@ schema.method.checkPassword = (password) => {
 	return encryptPassword(password, this.salt) === this.hashedPassword;
 };
 
-schema.virtual('password').set((password) => {
+schema.virtual('password').set(function(password) {
 	this.salt = Math.random() + '';
 	this.hashedPassword = encryptPassword(password, this.salt);
 });
@@ -70,9 +73,4 @@ module.exports = mongoose.model('User', schema);
 
 function encryptPassword(password, salt) {
 	return crypto.createHmac('sha1', salt).update(password).digest('hex');
-}
-
-function validateEmail(email) {
-	var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-	return re.test(email)
 }
