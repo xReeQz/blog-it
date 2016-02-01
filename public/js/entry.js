@@ -1,5 +1,7 @@
 require('./../../node_modules/bootstrap/dist/css/bootstrap.css');
-require('./../css/style.scss');
+require('./../../node_modules/font-awesome/css/font-awesome.css')
+require('./../external/clean-blog/css/clean-blog.css');
 
 require('./../../node_modules/jquery/dist/jquery.js');
-require('bootstrap');
+require('./../../node_modules/bootstrap/dist/js/bootstrap.js');
+require('./../external/clean-blog/css/clean-blog.css')

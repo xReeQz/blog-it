@@ -14,27 +14,27 @@ module.exports = {
 	module: {
 		loaders: [
 			{
-				test: /\.woff2$/,
+				test: /\.woff2($|(\?v=.*))/,
 				loader: 'file'
 			},
 			{
-				test: /\.woff$/,
+				test: /\.woff($|(\?v=.*))/,
 				loader: 'file'
 			},
 			{
-				test: /\.ttf$/,
+				test: /\.ttf($|(\?v=.*))/,
 				loader: 'file'
 			},
 			{
-				test: /\.eot$/,
+				test: /\.eot($|(\?v=.*))/,
 				loader: 'file'
 			},
 			{
-				test: /\.svg$/,
+				test: /\.svg($|(\?v=.*))/,
 				loader: 'file'
 			},
 			{
-				test: /\.css$/,
+				test: /\.css($|(\?v=.*))/,
 				loader: ExtractTextPlugin.extract('style', 'css!resolve-url')
 			},
 			{
