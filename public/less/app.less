@@ -2,19 +2,35 @@
 
 .navbar-default {
 	.navbar-toggle {
+		margin-top: 12px;
+		margin-bottom: 12px;
+		padding: 9px;
+		
 		.icon-circle {
 			background-color: @gray;
 			border-radius: 50%;
 			display: block;
 			float: left;
-			height: 8px;
-			margin-top: 3px;
-			margin-bottom: 3px;
-			width: 8px;
+			height: 6px;
+			width: 6px;
 		}
 		
 		.icon-circle + .icon-circle {
-			margin-left: 4px;
+			margin-left: 3px;
 		}
 	}
 }
+
+.intro-header.overlayed {
+    position: relative;
+
+		&::before {
+				content: "";
+				display: block;
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0, 0, 0, 0.45);
+		}
+}
+

@@ -1,10 +1,31 @@
-mixin header(header, subheading, isHompage)
-	- isHompage = isHompage || true;
-	header.intro-header(style= isHompage ? "background-image: url('external/clean-blog/img/home-bg.jpg')" : "")
+mixin header(header, subheading, meta, image)
+	- var headerStyle = !!image ? `background-image: url('${image}')` : ``;
+	- var headerClass = !!image ? 'intro-header overlayed' : 'intro-header';
+	
+	header(class=headerClass, style=headerStyle )
 		.container
 			.row
 				.col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
-					.site-heading
-						h1= header
-						hr.small
-						span.subheading= subheading
+					if !!meta
+						.post-heading
+							h1= header
+							h2.subheading= subheading
+							span.meta
+								| Posted by 
+								// TODO: Replace href with a link to author's page
+								a(href='#')= meta.author
+								|  on #{meta.createdOn}
+					else
+						.site-heading
+							h1= header
+							hr.small
+							span.subheading= subheading
+
+mixin errorHeader(error)
+	- var headings = { 401: `You can't touch this!`, 404: `Ain't got this far yet?`, 500: `It could be much worse!` };
+	-	var header = !!headings[error.status] ? headings[error.status] : headings[500];
+	-	var image = !!headings[error.status] ? `img/${error.status}-bg.jpg` : `img/500-bg.jpg`;
+	- var subheading = `${error.status} - ${error.message}`;
+
+	+header(header, subheading, null, image)
+							

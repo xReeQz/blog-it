@@ -1,6 +1,10 @@
 extends layout
 
+block variables
+	- var title = 'Oops, an error occured!';
+
+block header
+	+errorHeader(error)
+	
 block content
-  h1= message
-  h2= error.status
-  pre #{error.stack}
+	pre #{error.stack}

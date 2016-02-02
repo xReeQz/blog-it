@@ -34,7 +34,7 @@ module.exports = {
 				loader: 'file'
 			},
 			{
-				test: /\.css($|(\?v=.*))/,
+				test: /\.css$/,
 				loader: ExtractTextPlugin.extract('style', 'css!resolve-url')
 			},
 			{

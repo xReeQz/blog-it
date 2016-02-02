@@ -18,11 +18,14 @@ html(lang='en')
 	body
 		include ./includes/nav.jade
 		
-		block content
-		
+		block header
+		.container
+			.row
+				.col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
+					block content
 		hr
-		
+
 		include ./includes/footer.jade
-		
+
 		block js
 			script(src='bundle/bundle.js')
