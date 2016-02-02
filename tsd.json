@@ -9,7 +9,7 @@
       "commit": "f29bf726a60674dbf24bab06a26403a3871c3f21"
     },
     "node/node.d.ts": {
-      "commit": "f29bf726a60674dbf24bab06a26403a3871c3f21"
+      "commit": "e69fe60f2d6377ea4fae539493997b098f52cad1"
     },
     "validator/validator.d.ts": {
       "commit": "5d0f2126c8dac8fce0ff020218aea06607213b0d"
@@ -22,6 +22,24 @@
     },
     "webpack/webpack.d.ts": {
       "commit": "3d2f9971a107e2eee2de3ec5318f5c54071e16ed"
+    },
+    "http-errors/http-errors.d.ts": {
+      "commit": "e69fe60f2d6377ea4fae539493997b098f52cad1"
+    },
+    "nconf/nconf.d.ts": {
+      "commit": "e69fe60f2d6377ea4fae539493997b098f52cad1"
+    },
+    "express-session/express-session.d.ts": {
+      "commit": "e69fe60f2d6377ea4fae539493997b098f52cad1"
+    },
+    "mime/mime.d.ts": {
+      "commit": "e69fe60f2d6377ea4fae539493997b098f52cad1"
+    },
+    "express/express.d.ts": {
+      "commit": "e69fe60f2d6377ea4fae539493997b098f52cad1"
+    },
+    "serve-static/serve-static.d.ts": {
+      "commit": "e69fe60f2d6377ea4fae539493997b098f52cad1"
     }
   }
 }
