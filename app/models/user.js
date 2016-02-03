@@ -21,6 +21,7 @@ var schema = new Schema({
 		type: String,
 		trim: true,
 		unique: true,
+		sparse: true,
 		maxLength: 100,
 		validate: [validator.isEmail, 'Email is invalid.']
 	},

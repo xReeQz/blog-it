@@ -23,6 +23,11 @@
 				"clientID": 1510927545879324,
 				"clientSecret": "c56e32591c09f4d92b92d61dd6f3e824",
 				"callbackURL": "http://localhost:3000/auth/facebook/return"
+			},
+			"google": {
+				"clientID": "790712626319-cucpsb4js4oe2r9ave4849904n3d5vgj.apps.googleusercontent.com",
+				"clientSecret": "bcqnUe14WwexUnkSMvzl0K97",
+				"callbackURL": "http://localhost:3000/auth/google/return"
 			}
 		}
 	},

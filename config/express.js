@@ -13,6 +13,7 @@ var httpError = require('http-errors');
 var path = require('path');
 
 var sessionStore = require('../modules/sessionStore');
+var userLoader = require('../modules/userLoader');
 
 
 module.exports = (app, config) => {
@@ -42,6 +43,7 @@ module.exports = (app, config) => {
   app.use(compress());
   app.use(express.static(path.join(config('root'), '/public')));
   app.use(methodOverride());
+	app.use(userLoader);
 
   var controllers = glob.sync(path.join(config('root'), '/app/controllers/*.js'));
   controllers.forEach((controller) => {

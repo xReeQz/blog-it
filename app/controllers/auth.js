@@ -5,8 +5,14 @@ var router = express.Router();
 
 router.get('/facebook', passport.authenticate('facebook'));
 router.get('/facebook/return', passport.authenticate('facebook'), (req, res, next) => {
-	res.end(`Goddamn, ${req.user.firstName}, it works`);
+	res.redirect('/');
 });
+
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email']}));
+router.get('/google/return', passport.authenticate('google'), (req, res, next) => {
+	res.redirect('/');
+});
+
 
 router.get('/login', (req, res, next) => {
 	res.render('login', {
@@ -15,6 +21,10 @@ router.get('/login', (req, res, next) => {
 	});	
 });
 
+router.get('/logout', (req, res, next) => {
+	req.logout();
+	res.redirect('/');
+});
 
 
 module.exports = (app) => {
