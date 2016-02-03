@@ -6,6 +6,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var passport = require('./passport');
 var compress = require('compression');
 var methodOverride = require('method-override');
 var httpError = require('http-errors');
@@ -36,6 +37,8 @@ module.exports = (app, config) => {
     saveUninitialized: true,
     store: sessionStore
 	}));
+	app.use(passport.initialize());
+	app.use(passport.session());
   app.use(compress());
   app.use(express.static(path.join(config('root'), '/public')));
   app.use(methodOverride());
@@ -44,7 +47,7 @@ module.exports = (app, config) => {
   controllers.forEach((controller) => {
     require(controller)(app);
   });
-
+	
   app.use((req, res, next) => {
     next(new httpError.NotFound('Page not found'));
   });

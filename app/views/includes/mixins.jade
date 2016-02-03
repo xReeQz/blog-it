@@ -24,7 +24,7 @@ mixin header(header, subheading, meta, image)
 mixin errorHeader(error)
 	- var headings = { 401: `You can't touch this!`, 404: `Ain't got this far yet?`, 500: `It could be much worse!` };
 	-	var header = !!headings[error.status] ? headings[error.status] : headings[500];
-	-	var image = !!headings[error.status] ? `img/${error.status}-bg.jpg` : `img/500-bg.jpg`;
+	-	var image = !!headings[error.status] ? `/img/${error.status}-bg.jpg` : `/img/500-bg.jpg`;
 	- var subheading = `${error.status} - ${error.message}`;
 
 	+header(header, subheading, null, image)

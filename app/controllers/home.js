@@ -3,7 +3,10 @@ var httpError = require('http-errors');
 var router = express.Router();
 
 router.get('/', (req, res, next) => {
-	res.render('index', { title: 'Blog-IT', subheading: 'What is IT up to? Find here!' });
+	res.render('index', {
+		title: 'Blog-IT',
+		subheading: 'What is IT up to? Find here!'
+	});
 });
 
 

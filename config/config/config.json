@@ -19,7 +19,11 @@
 		},
 		"port": 3000,
 		"passport": {
-			
+			"facebook": {
+				"clientID": 1510927545879324,
+				"clientSecret": "c56e32591c09f4d92b92d61dd6f3e824",
+				"callbackURL": "http://localhost:3000/auth/facebook/return"
+			}
 		}
 	},
 	"production": {

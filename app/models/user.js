@@ -21,22 +21,14 @@ var schema = new Schema({
 		type: String,
 		trim: true,
 		unique: true,
-		required: true,
 		maxLength: 100,
 		validate: [validator.isEmail, 'Email is invalid.']
 	},
-	hashedPassword: {
-		type: String,
-		required: true
-	},
-	salt: {
-		type: String,
-		required: true
-	},
-	createdDate: {
-		type: Date,
-		default: Date.now
-	}
+	facebook: { id: { type: String, unique: true } },
+	google: { id: { type: String, unique: true } },
+	hashedPassword: { type: String },
+	salt: { type: String },
+	createdDate: { type: Date, default: Date.now }
 });
 
 schema.method.checkPassword = (password) => {
@@ -48,24 +40,12 @@ schema.virtual('password').set(function(password) {
 	this.hashedPassword = encryptPassword(password, this.salt);
 });
 
-schema.static.authorize = (email, password) => {
-	var User = this;
-
-	return User.findOneAsync({ email: email })
-		.then(user => {
-			if (user) {
-				if (user.checkPassword(password)) {
-					return user;
-				} else {
-					var err = new Error('Password is wrong.');
-					err.name = 'AuthError';
-					throw err;
-				}
-			}
-
-			return null;
-		})
-};
+schema.virtual('name').set(function(fullName) {
+	var nameParts = fullName.split(' ');
+	
+	this.firstName = nameParts[0];
+	this.lastName = nameParts[1];
+});
 
 
 module.exports = mongoose.model('User', schema);
