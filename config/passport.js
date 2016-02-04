@@ -5,51 +5,30 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var User = require('../app/models/user');
 
-passport.use(new FacebookStrategy({
-	clientID: config('passport:facebook:clientID'),
-	clientSecret: config('passport:facebook:clientSecret'),
-	callbackURL: config('passport:facebook:callbackURL')
-}, (accessToken, refreshToken, profile, done) => {
-	User.findOneAsync({ facebook: { id: profile.id } })
-		.then((user) => {
-			if (user) {
+passport.use(new LocalStrategy({ usernameField: 'email' },
+	(email, password, done) => {
+		User.findOneAsync({email: email})
+			.then(user => {
+				if(!user) {
+					return done(null, false);
+				}
+				
+				if(!user.checkPassword(password)) {
+					return done(null, false);
+				}
+				
 				return done(null, user);
-			}
+			})
+			.catch(err => done(err));
+	}));
 
-			var newUser = new User({
-				facebook: { id: profile.id },
-				name: profile.displayName
-			});
+passport.use(new FacebookStrategy(
+	buildOauth2Config('facebook'),
+	buildOauth2Verify('facebook')));
 
-			newUser.saveAsync()
-				.then(user => done(null, user))
-				.catch(err => done(err));
-		})
-		.catch(err => done(err));
-}));
-
-passport.use(new GoogleStrategy({
-	clientID: config('passport:google:clientID'),
-	clientSecret: config('passport:google:clientSecret'),
-	callbackURL: config('passport:google:callbackURL') 
-}, (accessToken, refreshToken, profile, done) => {
-	User.findOneAsync({ google: { id: profile.id } })
-		.then((user) => {
-			if (user) {
-				return done(null, user);
-			}
-
-			var newUser = new User({
-				google: { id: profile.id },
-				name: profile.displayName
-			});
-
-			newUser.saveAsync()
-				.then(user => done(null, user))
-				.catch(err => done(err));
-		})
-		.catch(err => done(err));
-}));
+passport.use(new GoogleStrategy(
+	buildOauth2Config('google'),
+	buildOauth2Verify('google')));
 
 passport.serializeUser((user, done) => {
 	done(null, user._id);
@@ -69,3 +48,36 @@ passport.deserializeUser((id, done) => {
 
 
 module.exports = passport;
+
+
+function buildOauth2Config(provider) {
+	return {
+		clientID: config(`passport:${provider}:clientID`),
+		clientSecret: config(`passport:${provider}:clientSecret`),
+		callbackURL: config(`passport:${provider}:callbackURL`)
+	};
+}
+
+function buildOauth2Verify(provider) {
+	return (accessToken, refreshToken, profile, done) => {
+		var filter = {};
+		filter[provider] = {};
+		filter[provider].id = profile.id;
+
+		User.findOneAsync(filter)
+			.then(user => {
+				if (user) {
+					return done(null, user);
+				}
+
+				filter.name = profile.displayName;
+
+				var newUser = new User(filter);
+
+				newUser.saveAsync()
+					.then(user => done(null, user))
+					.catch(err => done(err));
+			})
+			.catch(err => done(err));
+	};
+}

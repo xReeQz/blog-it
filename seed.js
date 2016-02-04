@@ -5,7 +5,7 @@ var User = require('./app/models/user');
 var user = new User({
 	firstName: 'Van',
 	lastName: 'Gogh',
-	email: 'a@a.com',
+	email: 'aarg@a.com',
 	password: '123'
 });
 
@@ -15,4 +15,4 @@ if (validationErr) {
 	console.log(validationErr);
 }
 
-console.log(user);
+user.saveAsync().then(() => { console.log('Done')});

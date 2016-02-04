@@ -1,5 +1,5 @@
 var path = require('path');
-var context = path.resolve(__dirname, 'public/js');
+var context = path.resolve(__dirname, 'config');
 var output = path.resolve(__dirname, 'public/bundle')
 var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");

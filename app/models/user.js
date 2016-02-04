@@ -25,14 +25,14 @@ var schema = new Schema({
 		maxLength: 100,
 		validate: [validator.isEmail, 'Email is invalid.']
 	},
-	facebook: { id: { type: String, unique: true } },
-	google: { id: { type: String, unique: true } },
+	facebook: { id: { type: String, unique: true, sparse: true } },
+	google: { id: { type: String, unique: true, sparse: true } },
 	hashedPassword: { type: String },
 	salt: { type: String },
 	createdDate: { type: Date, default: Date.now }
 });
 
-schema.method.checkPassword = (password) => {
+schema.methods.checkPassword = function(password) {
 	return encryptPassword(password, this.salt) === this.hashedPassword;
 };
 

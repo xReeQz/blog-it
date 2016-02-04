@@ -1,4 +1,12 @@
+@import "vars.less";
+@import "mods.less";
 @import "../external/clean-blog/less/clean-blog.less";
+
+body {
+	&>.container {
+		margin-bottom: 50px;
+	}
+}
 
 .navbar-default {
 	.navbar-toggle {
@@ -34,3 +42,14 @@
 		}
 }
 
+.btn {
+	&.btn-social {
+		border-color: transparent;
+		color: white;
+		opacity: .9;
+		
+		&:hover {
+			opacity: 1;
+		}
+	}
+}

@@ -1,8 +1,39 @@
 extends layout
 
+block variables
+	- var title = 'Log In';
+	-	var	subheading = 'Please, log in using the way that suits you best.';
+
 block header
 	+header(title, subheading, null, '/img/home-bg.jpg')
 
 block content
-	a.btn.btn-info(href='/auth/facebook') Facebook
-	a.btn.btn-danger(href='/auth/google') Google
+	if errorMessage
+		.row
+			.col-xs-12
+				.alert.alert-danger.alert-dismissible.fade.in(role='alert')
+					button.close(type='button', data-dismiss='alert', aria-label='Close')
+						span(aria-hidden='true') ×
+					| #{errorMessage}
+	.row
+		.col-xs-12.col-md-6.m-bottom
+			a.btn.btn-social.w-100.bg-facebook(href='/auth/facebook')
+				i.fa.fa-facebook.fa-lg.m-right
+				| Log in with Facebook			
+		.col-xs-12.col-md-6.m-bottom
+			a.btn.btn-social.w-100.bg-google(href='/auth/google')
+				i.fa.fa-google-plus.fa-lg.m-right
+				| Log in with Google
+	form#loginForm(name='loginForm', method='POST', novalidate='')
+		.row.control-group
+			.form-group.col-xs-12.floating-label-form-group.controls
+				label Email
+				input.form-control(type='email', name='email', placeholder='Email', required='')
+				p.help-block.text-danger
+		.row.control-group
+			.form-group.col-xs-12.floating-label-form-group.controls
+				label Password
+				input.form-control(type='password', name='password', placeholder='Password', required='')
+				p.help-block.text-danger
+		input.d-none(type='submit')
+				
