@@ -1,6 +1,4 @@
 ﻿var crypto = require('crypto');
-var validator = require('validator');
-var util = require('util');
 var mongoose = require('../../modules/mongoose');
 var Schema = mongoose.Schema;
 
@@ -22,31 +20,37 @@ var schema = new Schema({
 		trim: true,
 		unique: true,
 		sparse: true,
-		maxLength: 100,
-		validate: [validator.isEmail, 'Email is invalid.']
+		maxLength: 100
 	},
 	facebook: { id: { type: String, unique: true, sparse: true } },
 	google: { id: { type: String, unique: true, sparse: true } },
 	hashedPassword: { type: String },
-	salt: { type: String },
-	createdDate: { type: Date, default: Date.now }
+	salt: { type: String }
 });
 
-schema.methods.checkPassword = function(password) {
+schema.methods.checkPassword = function (password) {
 	return encryptPassword(password, this.salt) === this.hashedPassword;
 };
 
-schema.virtual('password').set(function(password) {
+schema.virtual('password').set(function (password) {
 	this.salt = Math.random() + '';
 	this.hashedPassword = encryptPassword(password, this.salt);
 });
 
-schema.virtual('name').set(function(fullName) {
-	var nameParts = fullName.split(' ');
-	
-	this.firstName = nameParts[0];
-	this.lastName = nameParts[1];
+schema.virtual('createdAt').get(function () {
+	return this._id.getTimestamp();
 });
+
+schema.virtual('name')
+	.set(function (fullName) {
+		var nameParts = fullName.split(' ');
+
+		this.firstName = nameParts[0];
+		this.lastName = nameParts[1];
+	})
+	.get(function() {
+		return `${this.firstName} ${this.lastName}`;
+	});
 
 
 module.exports = mongoose.model('User', schema);

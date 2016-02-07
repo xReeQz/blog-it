@@ -6,6 +6,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var validator = require('express-validator');
+var validatorConfig = require('./validator');
 var passport = require('./passport');
 var compress = require('compression');
 var methodOverride = require('method-override');
@@ -30,6 +32,7 @@ module.exports = (app, config) => {
   app.use(bodyParser.urlencoded({
     extended: true
   }));
+	app.use(validator(validatorConfig)); 
   app.use(cookieParser());
 	app.use(session({
 		secret: config('session:secret'),
