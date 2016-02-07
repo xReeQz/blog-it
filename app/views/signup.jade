@@ -1,0 +1,65 @@
+extends layout
+
+block variables
+	- var title = 'Sign Up';
+	-	var	subheading = 'Tell us more about yourself.';
+
+block header
+	+header(title, subheading, null, '/img/signup-bg.jpg')
+
+block content
+	p You can easily sign up with Facebook or Google if you want.
+	.row.m-bottom-2x
+		.col-xs-12.col-md-6.m-bottom
+			a.btn.btn-social.w-100.bg-facebook(href='/auth/facebook')
+				i.fa.fa-facebook.fa-lg.m-right
+				| Sign up with Facebook			
+		.col-xs-12.col-md-6.m-bottom
+			a.btn.btn-social.w-100.bg-google(href='/auth/google')
+				i.fa.fa-google-plus.fa-lg.m-right
+				| Sign up with Google
+	if errorMessages.length
+		.row
+			.col-xs-12
+				.alert.alert-danger.alert-dismissible.fade.in(role='alert')
+					button.close(type='button', data-dismiss='alert', aria-label='Close')
+						span(aria-hidden='true') ×
+					ul
+						each message in errorMessages
+							li= message
+	form#signupForm(name='signupForm', method='POST', novalidate='')
+		.row.control-group
+			.form-group.col-xs-12.floating-label-form-group.controls
+				label First Name
+				input.form-control(type='text', name='firstName', placeholder='First Name',
+					value=form.firstName, required='', maxlength='50')
+				span.help-block
+		.row.control-group
+			.form-group.col-xs-12.floating-label-form-group.controls
+				label Last Name
+				input.form-control(type='text', name='lastName', placeholder='Last Name',
+					value=form.lastName, required='', maxlength='50')
+				span.help-block
+		.row.control-group
+			.form-group.col-xs-12.floating-label-form-group.controls
+				label Email
+				input.form-control(type='email', name='email', placeholder='Email',
+					value=form.email, required='', maxlength='100')
+				span.help-block
+		.row.control-group
+			.form-group.col-xs-12.floating-label-form-group.controls
+				label Password
+				input.form-control(type='password', name='password', placeholder='Password',
+					value=form.password, required='')
+				span.help-block
+		.row.control-group
+			.form-group.col-xs-12.floating-label-form-group.controls
+				label Confirm Password
+				input.form-control(type='password', name='passwordConfirm', placeholder='Confirm Password', 
+					value=form.passwordConfirm, required='', equalTo='[name=password]',
+					'data-msg-equalTo'='Password doesn\'t match.')
+				span.help-block
+		input.d-none(type='submit')
+
+append js
+	script(src='/bundle/signup.js')

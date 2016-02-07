@@ -20,6 +20,8 @@
     "http-errors": "^1.4.0",
     "jade": "^1.11.0",
     "jquery": "^2.2.0",
+    "jquery-validation": "^1.14.0",
+    "lodash": "^4.2.1",
     "method-override": "^2.3.0",
     "mongoose": "^4.4.0",
     "morgan": "^1.6.1",

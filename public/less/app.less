@@ -7,7 +7,7 @@ body {
 		margin-bottom: 50px;
 	}
 }
-
+/*--- NAVBAR BUTTON ---*/
 .navbar-default {
 	.navbar-toggle {
 		margin-top: 12px;
@@ -28,7 +28,7 @@ body {
 		}
 	}
 }
-
+/*--- PAGE HEADER ---*/
 .intro-header.overlayed {
     position: relative;
 
@@ -41,7 +41,7 @@ body {
 				background-color: rgba(0, 0, 0, 0.45);
 		}
 }
-
+/*--- SOCIAL BUTTONS ---*/
 .btn {
 	&.btn-social {
 		border-color: transparent;
@@ -50,6 +50,31 @@ body {
 		
 		&:hover {
 			opacity: 1;
+		}
+	}
+}
+/*--- VALIDATION ERRORS ---*/
+.floating-label-form-group {
+	&.error {
+		color: @red;
+		border-color: @red !important;
+		
+		&::after {
+			&:extend(.f-awesome);
+			content: "\f06a";
+			font-size: 1.75em;
+			position: absolute;
+			top: 50%;
+			right: @gap;
+			transform: translateY(-50%);
+		}
+		
+		.form-control {
+			padding-right: @gap2x;
+		}
+		
+		.help-block {
+			color: inherit;
 		}
 	}
 }

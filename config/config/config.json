@@ -5,6 +5,9 @@
 		},
 		"mongoose": {
 			"uri": "mongodb://localhost/blog-it-dev",
+			"messages": {
+				"required": "{PATH} is required."
+			},
 			"options": {
 				"server": {
 					"socketOptions": {
