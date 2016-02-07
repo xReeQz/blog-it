@@ -59,6 +59,7 @@ block content
 					value=form.passwordConfirm, required='', equalTo='[name=password]',
 					'data-msg-equalTo'='Password doesn\'t match.')
 				span.help-block
+		input(type='hidden', name='_csrf', value=csrf)
 		input.d-none(type='submit')
 
 append js

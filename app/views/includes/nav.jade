@@ -20,4 +20,6 @@ nav.navbar.navbar-default.navbar-custom.navbar-fixed-top
 						a(href='/auth/login') Log In
 				else
 					li
-						a(href='javascript:void(0)')= user.name
+						a#myProfile(role='button') My profile
+					li
+						a(href='/auth/logout') Logout

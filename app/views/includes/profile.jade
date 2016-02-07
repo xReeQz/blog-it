@@ -1,0 +1,27 @@
+- var createdAt = moment(user.createdAt).format('MMMM, YYYY');
+	
+section.profile-panel
+	a.close(role='button')
+		i.fa.fa-close
+	header.intro-header.overlayed
+		.container-fluid
+			.row
+				.col-md-12
+					.site-heading
+						h2= user.name
+						hr.small
+						span.subheading With Blog-IT since #{createdAt}
+	main
+		.container-fluid.m-bottom-2x
+			.row
+				.col-md-4
+					a.btn.btn-success.w-100.m-bottom#createArticle(role='button') Create Article
+				.col-md-4
+					a.btn.btn-primary.w-100.m-bottom#editProfile(role='button') Edit Profile
+				.col-md-4
+					a.btn.btn-danger.w-100#deleteProfile(role='button') Delete Profile
+		.container-fluid
+			.row
+				.col-md-12
+					| User info
+.overlay

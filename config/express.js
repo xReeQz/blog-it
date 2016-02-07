@@ -7,6 +7,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var validator = require('express-validator');
+var csrfProtection = require('csurf')();
+var csrfLoader = require('../modules/csrfLoader');
 var validatorConfig = require('./validator');
 var passport = require('./passport');
 var compress = require('compression');
@@ -22,6 +24,7 @@ module.exports = (app, config) => {
   var env = process.env.NODE_ENV || 'development';
   app.locals.ENV = env;
   app.locals.ENV_DEVELOPMENT = env == 'development';
+	app.locals.moment = require('moment');
 
   app.set('views', path.join(config('root'), '/app/views'));
   app.set('view engine', 'jade');
@@ -41,6 +44,7 @@ module.exports = (app, config) => {
     saveUninitialized: true,
     store: sessionStore
 	}));
+	app.use(csrfProtection, csrfLoader);
 	app.use(passport.initialize());
 	app.use(passport.session());
   app.use(compress());
