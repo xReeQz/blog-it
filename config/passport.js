@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var passport = require('passport');
 var config = require('./config');
 var LocalStrategy = require('passport-local').Strategy;
@@ -7,16 +8,16 @@ var User = require('../app/models/user');
 
 passport.use(new LocalStrategy({ usernameField: 'email' },
 	(email, password, done) => {
-		User.findOneAsync({email: email})
+		User.findOneAsync({ email: email })
 			.then(user => {
-				if(!user) {
+				if (!user) {
 					return done(null, false);
 				}
-				
-				if(!user.checkPassword(password)) {
+
+				if (!user.checkPassword(password)) {
 					return done(null, false);
 				}
-				
+
 				return done(null, user);
 			})
 			.catch(err => done(err));
@@ -54,30 +55,59 @@ function buildOauth2Config(provider) {
 	return {
 		clientID: config(`passport:${provider}:clientID`),
 		clientSecret: config(`passport:${provider}:clientSecret`),
-		callbackURL: config(`passport:${provider}:callbackURL`)
+		callbackURL: config(`passport:${provider}:callbackURL`),
+		profileFields: ['emails', 'displayName']
 	};
 }
 
 function buildOauth2Verify(provider) {
 	return (accessToken, refreshToken, profile, done) => {
 		var filter = {};
-		filter[provider] = {};
-		filter[provider].id = profile.id;
+		var email = _.map(profile.emails, 'value')[0];
+
+		if (email) {
+			filter.email = email;
+		} else {
+			filter[provider] = {};
+			filter[provider].id = profile.id;
+		}
 
 		User.findOneAsync(filter)
 			.then(user => {
 				if (user) {
-					return done(null, user);
+					if (!(user[provider].id && user.email)) {
+						return updateAndProceed(user);
+					}
+
+					return user;
 				}
 
-				filter.name = profile.displayName;
-
-				var newUser = new User(filter);
-
-				newUser.saveAsync()
-					.then(user => done(null, user))
-					.catch(err => done(err));
+				return createNewAndProceed();
 			})
-			.catch(err => done(err));
+			.then(user => done(null, user))
+			.catch(err => done(err))
+
+		function createNewAndProceed() {
+			var newUser = new User({
+				email: email,
+				name: profile.displayName,
+			});
+
+			newUser[provider].id = profile.id;
+
+			return newUser.saveAsync();
+		}
+
+		function updateAndProceed(user) {
+			var update = {};
+
+			update.email = email;
+			update[provider] = {};
+			update[provider].id = profile.id
+			
+			return user.updateAsync(update)
+				.then(() => user);
+		}
 	};
 }
+

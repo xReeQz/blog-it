@@ -1,5 +1,9 @@
 extends layout
 
+block variables
+	- var title = 'Blog-IT';
+	- var subheading = 'What is IT up to? Find here.';	
+
 block header
 	+header(title, subheading, null, 'img/home-bg.jpg')
 
@@ -8,9 +12,14 @@ block content
 	main.home-page
 		if user
 			p.greetings.text-center We're glad you're here, #{user.firstName}!
+			
 		form#searchForm.search(name='searchForm', method='GET', novalidate='')
 			.row.control-group
 				.form-group.col-md-12.floating-label-form-group.controls
 					label Search Term
-					input.form-control(type='text', name='searchTerm', placeholder='Search an article...', value=form.searchTerm)
+					input.form-control(type='text', name='searchTerm', placeholder='Search an article...', value=searchTerm)
 					span.help-block
+					
+		if articles.length
+			each article in articles
+				+articlePreview(article)

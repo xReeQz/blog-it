@@ -1,5 +1,6 @@
 var passport = require('passport');
 var validator = require('../../../modules/validator');
+var Promise = require('bluebird');
 var User = require('../../models/user');
 
 
@@ -58,11 +59,15 @@ function signupPost(req, res, next) {
 	function signupAndLogin() {
 		var newUser = new User(req.body);
 
-		return newUser.saveAsync().then(user => {
-			req.login(user, err => {
-				return err ? next(err) : res.redirect('/');
-			});
-		});
+		return newUser.saveAsync()
+			.then(user => {
+				return new Promise((resolve, reject) => {
+					req.login(user, err => {
+						return err ? reject() : resolve();
+					});
+				});
+			})
+			.then(() => res.redirect('/'));
 	}
 
 	function handleSignupErrors(errors) {

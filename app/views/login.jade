@@ -17,6 +17,7 @@ block content
 			a.btn.btn-social.w-100.bg-google(href='/auth/google')
 				i.fa.fa-google-plus.fa-lg.m-right
 				| Log in with Google
+				
 	if errorMessage
 		.row
 			.col-xs-12
@@ -24,6 +25,7 @@ block content
 					button.close(type='button', data-dismiss='alert', aria-label='Close')
 						span(aria-hidden='true') ×
 					| #{errorMessage}
+					
 	form#loginForm(name='loginForm', method='POST', novalidate='')
 		.row.control-group
 			.form-group.col-xs-12.floating-label-form-group.controls

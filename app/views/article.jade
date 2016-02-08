@@ -1,0 +1,17 @@
+extends layout
+
+block header
+	- var createdAt = moment(createdAt).format('MMMM DD, YYYY');
+	- var meta = { author: author.name, createdAt: createdAt };
+
+	+header(title, null, meta)
+
+block content
+	if user.id === author.id
+		.row.m-bottom-2x
+			.col-md-6.m-bottom
+				a.btn.btn-primary.w-100(role='button') Edit article
+			.col-md-6
+				a.btn.btn-danger.w-100(role='button') Delete article
+				
+	article= text

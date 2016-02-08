@@ -1,15 +1,8 @@
 var express = require('express');
-var httpError = require('http-errors');
+var handlers = require('./handlers/_home');
 var router = express.Router();
 
-router.get('/', (req, res, next) => {
-	res.render('index', {
-		title: 'Blog-IT',
-		subheading: 'What is IT up to? Find here!'
-	});
-});
+router.get('/', handlers.get);
 
 
-module.exports = app => {
-	app.use('/', router);
-};
+module.exports = app => app.use('/', router);

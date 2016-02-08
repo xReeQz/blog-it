@@ -29,17 +29,23 @@ body {
 	}
 }
 /*--- PAGE HEADER ---*/
-.intro-header.overlayed {
-    position: relative;
-
-		&::before {
-				content: "";
-				display: block;
-				position: absolute;
-				width: 100%;
-				height: 100%;
-				background-color: @grayTransparent;
-		}
+.intro-header {
+	&.overlayed {
+			position: relative;
+			
+			&.blue {
+				background-color: @blueLight;
+			}
+			
+			&::before {
+					content: "";
+					display: block;
+					position: absolute;
+					width: 100%;
+					height: 100%;
+					background-color: @grayTransparent;
+			}
+	}
 }
 /*--- PROFILE PANEL ---*/
 .profile-panel {
@@ -117,8 +123,8 @@ body {
 /*--- VALIDATION ERRORS ---*/
 .floating-label-form-group {
 	&.error {
-		color: @red;
-		border-color: @red !important;
+		color: @redLight;
+		border-color: @redLight !important;
 		
 		&::after {
 			&:extend(.f-awesome);

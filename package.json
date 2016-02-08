@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+		"start": "npm i & npm run bundle | NODE_ENV=development BLUEBIRD_LONG_STACK_TRACES=0 BLUEBIRD_WARNINGS=0 node app.js",
     "bundle": "webpack --progress --colors",
     "watch-ui": "webpack --progress --colors --watch"
   },
@@ -33,7 +34,8 @@
     "passport-facebook": "^2.1.0",
     "passport-google-oauth": "^0.2.0",
     "passport-local": "^1.0.0",
-    "serve-favicon": "^2.3.0"
+    "serve-favicon": "^2.3.0",
+    "slug": "^0.9.1"
   },
   "devDependencies": {
     "css-loader": "^0.23.1",

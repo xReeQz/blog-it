@@ -1,16 +1,14 @@
-- var createdAt = moment(user.createdAt).format('MMMM, YYYY');
-	
 section.profile-panel
 	a.close(role='button')
 		i.fa.fa-close
-	header.intro-header.overlayed
+	header.intro-header.overlayed.blue
 		.container-fluid
 			.row
 				.col-md-12
 					.site-heading
 						h2= user.name
 						hr.small
-						span.subheading With Blog-IT since #{createdAt}
+						span.subheading With Blog-IT since #{moment(user.createdAt).format('MMMM, YYYY')}
 	main
 		.container-fluid.m-bottom-2x
 			.row

@@ -1,20 +1,20 @@
 mixin header(header, subheading, meta, image)
 	- var headerStyle = !!image ? `background-image: url('${image}')` : ``;
-	- var headerClass = !!image ? 'intro-header overlayed' : 'intro-header';
+	- var headerClass = !!meta ? 'blue' : '';
 	
-	header(class=headerClass, style=headerStyle )
+	header.intro-header.overlayed(class=headerClass, style=headerStyle)
 		.container
 			.row
 				.col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
 					if !!meta
-						.post-heading
+						.post-heading.text-center
 							h1= header
 							h2.subheading= subheading
 							span.meta
 								| Posted by 
 								// TODO: Replace href with a link to author's page
 								a(href='#')= meta.author
-								|  on #{meta.createdOn}
+								|  on #{meta.createdAt}
 					else
 						.site-heading
 							h1= header
@@ -28,4 +28,20 @@ mixin errorHeader(error)
 	- var subheading = `${error.status} - ${error.message}`;
 
 	+header(header, subheading, null, image)
-							
+
+mixin articlePreview(article, isInPanelList)
+	- var url = `/articles/${article.slug}`;
+	- var createdAt = moment(article.createdAt).format('MMMM DD, YYYY');
+	
+	.post-preview
+		a(href=url)
+			if isInPanelList
+				h4.post-title= article.title
+			else
+				h2.post-title= article.title
+		p.post-meta
+			| Posted by
+			if !isInPanelList 
+				a(href='#')= ` ${article.author.name}` 
+			|  on #{createdAt}
+	hr

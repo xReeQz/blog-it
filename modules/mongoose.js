@@ -5,6 +5,6 @@ var messages = mongoose.Error.messages;
 
 Promise.promisifyAll(mongoose);
 mongoose.connect(config('mongoose:uri'), config('mongoose:options'));
-messages.general.required = config('mongoose:messages:required');
+
 
 module.exports = mongoose;

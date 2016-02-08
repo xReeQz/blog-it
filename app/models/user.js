@@ -1,5 +1,6 @@
 ﻿var crypto = require('crypto');
 var mongoose = require('../../modules/mongoose');
+var helper = require('./_helper');
 var Schema = mongoose.Schema;
 
 var schema = new Schema({
@@ -25,7 +26,8 @@ var schema = new Schema({
 	facebook: { id: { type: String, unique: true, sparse: true } },
 	google: { id: { type: String, unique: true, sparse: true } },
 	hashedPassword: { type: String },
-	salt: { type: String }
+	salt: { type: String },
+	isActive: { type: Boolean, required: true, default: true }
 });
 
 schema.methods.checkPassword = function (password) {
@@ -37,9 +39,7 @@ schema.virtual('password').set(function (password) {
 	this.hashedPassword = encryptPassword(password, this.salt);
 });
 
-schema.virtual('createdAt').get(function () {
-	return this._id.getTimestamp();
-});
+schema.virtual('createdAt').get(helper.createdAt);
 
 schema.virtual('name')
 	.set(function (fullName) {
