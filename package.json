@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-		"start": "npm i & npm run bundle & node app.js --debug --NODE_ENV=development",
+		"start": "npm i & npm run bundle & node app.js",
     "bundle": "webpack --progress --colors",
     "watch": "webpack --progress --colors --watch"
   },

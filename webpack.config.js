@@ -1,8 +1,11 @@
 var path = require('path');
 var context = path.resolve(__dirname, 'public/js');
-var output = path.resolve(__dirname, 'public/bundle')
+var output = path.resolve(__dirname, 'public/bundle');
 var webpack = require('webpack');
+var config = require('./config/config');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+var isProduction = config('NODE_ENV', true);
 
 module.exports = {
 	context: context,
@@ -13,7 +16,8 @@ module.exports = {
 	},
 	output: {
 		path: output,
-		filename: '[name].js'
+		filename: '[name].js',
+		sourceMapFilename: '[file].map'
 	},
 	module: {
 		loaders: [
@@ -47,6 +51,7 @@ module.exports = {
 			}
 		]
 	},
+	devtool: isProduction ? 'source-map' : false,
 	plugins: [
 		new webpack.optimize.UglifyJsPlugin(),
 		new ExtractTextPlugin('bundle.css', { allChunks: true }),
