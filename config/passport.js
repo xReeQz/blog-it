@@ -8,7 +8,7 @@ var User = require('../app/models/user');
 
 passport.use(new LocalStrategy({ usernameField: 'email' },
 	(email, password, done) => {
-		User.findOneAsync({ email: email })
+		User.findOneAsync({ email: email, isActive: true })
 			.then(user => {
 				if (!user) {
 					return done(null, false);
@@ -75,6 +75,10 @@ function buildOauth2Verify(provider) {
 		User.findOneAsync(filter)
 			.then(user => {
 				if (user) {
+					if (!user.isActive) {
+						return null;
+					}
+					
 					if (!(user[provider].id && user.email)) {
 						return updateAndProceed(user);
 					}
@@ -84,7 +88,11 @@ function buildOauth2Verify(provider) {
 
 				return createNewAndProceed();
 			})
-			.then(user => done(null, user))
+			.then(user => {
+				return user 
+					? done(null, user) 
+					: done(null, false) 
+			})
 			.catch(err => done(err))
 
 		function createNewAndProceed() {
