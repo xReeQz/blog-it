@@ -3,7 +3,7 @@ var path = require('path');
 var rootPath = path.resolve(__dirname, '../..');
 var configPath = path.join(__dirname, 'config.json');
 
-nconf.argv().env().file({ file: configPath });
+nconf.file({ file: configPath }).argv().env();
 
 
 module.exports = (key, isEnv) => {
